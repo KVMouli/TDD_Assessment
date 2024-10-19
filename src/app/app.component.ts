@@ -17,7 +17,11 @@ export class AppComponent {
       return 0;
     }
 
-    const numArray = numbers.split(',').map(Number);
+    // Replace newlines with commas and split numbers by comma
+    const numArray = numbers.replace(/\n/g, ',').split(',').map(Number);
+
     return numArray.reduce((a, b) => a + b, 0);
   }
+
+
 }

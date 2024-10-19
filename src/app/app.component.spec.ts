@@ -27,22 +27,43 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('Hello, StringCalculator-TDD');
   });
+
   it('should return 0 for an empty string', () => {
-    expect(component.Add('')).toBe(0);
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('')).toBe(0);
   });
 
   it('should return the number itself when one number is provided', () => {
-    expect(component.Add('1')).toBe(1);
-    expect(component.Add('5')).toBe(5);
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1')).toBe(1);
+    expect(app.Add('5')).toBe(5);
   });
 
   it('should return the sum of two numbers', () => {
-    expect(component.Add('1,2')).toBe(3);
-    expect(component.Add('10,20')).toBe(30);
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1,2')).toBe(3);
+    expect(app.Add('10,20')).toBe(30);
   });
 
   it('should handle multiple numbers (refactor when you reach this)', () => {
-    expect(component.Add('1,2,3')).toBe(6);
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1,2,3')).toBe(6);
+  });
+  it('should handle newlines between numbers', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1\n2,3')).toBe(6);
+    expect(app.Add('10\n5\n15')).toBe(30);
   });
 
+  it('should handle mixed delimiters (comma and newline)', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1\n2,3')).toBe(6);
+    expect(app.Add('10\n20,30')).toBe(60);
+  });
 });
