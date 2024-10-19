@@ -10,4 +10,14 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'StringCalculator-TDD';
+  constructor() { }
+
+  Add(numbers: string): number {
+    if (numbers === "") {
+      return 0;
+    }
+
+    const numArray = numbers.split(',').map(Number);
+    return numArray.reduce((a, b) => a + b, 0);
+  }
 }
