@@ -22,16 +22,17 @@ export class AppComponent {
     // Check for custom delimiters
     if (numbers.startsWith("//")) {
       const delimiterEnd = numbers.indexOf("\n");
-      const delimiterPart = numbers.substring(2, delimiterEnd);
 
-      // Check for multiple delimiters in the format //[delim1][delim2]
-      const delimiterMatches = delimiterPart.match(/\[([^\]]+)\]/g);
-      if (delimiterMatches) {
-        // Extract delimiters and escape special regex characters
-        const delimiters = delimiterMatches.map(d => d.slice(1, -1).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        delimiter = new RegExp(delimiters.join('|'));  // Create regex for multiple delimiters
+      // Handle multiple custom delimiters in the format //[delim1][delim2]...
+      if (numbers[2] === '[') {
+        const delimiterSection = numbers.substring(2, delimiterEnd);
+        const delimiters = delimiterSection.match(/\[(.*?)\]/g)!.map(d => d.slice(1, -1));  // Extract each delimiter
+
+        // Create a regular expression that matches any of the delimiters
+        delimiter = new RegExp(delimiters.map(d => d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'));
       } else {
-        delimiter = new RegExp(delimiterPart.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));  // Single delimiter
+        // Handle a single character delimiter
+        delimiter = new RegExp(numbers[2]);
       }
 
       numbers = numbers.substring(delimiterEnd + 1);  // Remove delimiter declaration

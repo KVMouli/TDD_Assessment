@@ -131,4 +131,11 @@ describe('AppComponent', () => {
     expect(app.Add('//[---][+++]\n7---8+++9')).toBe(24);
   });
 
+  it('should still support default delimiters when no custom delimiter is given', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1,2')).toBe(3);
+    expect(app.Add('1\n2,3')).toBe(6);
+  });
+
 });
