@@ -100,4 +100,18 @@ describe('AppComponent', () => {
     expect(app.Add('1,2')).toBe(3);
     expect(app.Add('1\n2,3')).toBe(6);
   });
+
+  it('should ignore numbers greater than 1000', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('2,1001')).toBe(2);
+    expect(app.Add('1000,1001,2')).toBe(1002);
+  });
+
+  it('should still support default delimiters when no custom delimiter is given', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1,2')).toBe(3);
+    expect(app.Add('1\n2,3')).toBe(6);
+  });
 });
