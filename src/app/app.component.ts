@@ -17,11 +17,20 @@ export class AppComponent {
       return 0;
     }
 
-    // Replace newlines with commas and split numbers by comma
-    const numArray = numbers.replace(/\n/g, ',').split(',').map(Number);
+    let delimiter = /,|\n/;  // Default delimiter (comma or newline)
+
+    // Check if there's a custom delimiter
+    if (numbers.startsWith("//")) {
+      const delimiterEnd = numbers.indexOf("\n");
+      delimiter = new RegExp(numbers.substring(2, delimiterEnd));  // Extract the custom delimiter
+      numbers = numbers.substring(delimiterEnd + 1);  // Remove the delimiter declaration line
+    }
+
+    const numArray = numbers.split(delimiter).map(Number);
 
     return numArray.reduce((a, b) => a + b, 0);
   }
 
 
-}
+
+  }

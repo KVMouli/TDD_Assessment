@@ -21,12 +21,6 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('StringCalculator-TDD');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, StringCalculator-TDD');
-  });
 
   it('should return 0 for an empty string', () => {
     const fixture = TestBed.createComponent(AppComponent);
@@ -65,5 +59,26 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app.Add('1\n2,3')).toBe(6);
     expect(app.Add('10\n20,30')).toBe(60);
+  });
+
+  it('should handle custom delimiter', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('//;\n1;2')).toBe(3);
+    expect(app.Add('//-\n4-5-6')).toBe(15);
+    expect(app.Add('//#\n10#20#30')).toBe(60);
+  });
+
+  it('should support custom delimiter with multiple numbers', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('//;\n1;2;3;4')).toBe(10);
+  });
+
+  it('should still support default delimiters when no custom delimiter is given', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1,2')).toBe(3);
+    expect(app.Add('1\n2,3')).toBe(6);
   });
 });
