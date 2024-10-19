@@ -22,7 +22,15 @@ export class AppComponent {
     // Check for custom delimiter
     if (numbers.startsWith("//")) {
       const delimiterEnd = numbers.indexOf("\n");
-      delimiter = new RegExp(numbers.substring(2, delimiterEnd));  // Extract custom delimiter
+
+      // Check if the delimiter is wrapped in square brackets
+      if (numbers[2] === '[' && numbers[delimiterEnd - 1] === ']') {
+        const customDelimiter = numbers.substring(3, delimiterEnd - 1);
+        delimiter = new RegExp(customDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));  // Escape special regex characters
+      } else {
+        delimiter = new RegExp(numbers[2]);  // Handle single character delimiter
+      }
+
       numbers = numbers.substring(delimiterEnd + 1);  // Remove delimiter declaration
     }
 
@@ -39,5 +47,4 @@ export class AppComponent {
       .filter(num => num <= 1000)  // Ignore numbers greater than 1000
       .reduce((a, b) => a + b, 0);
   }
-
   }
