@@ -19,16 +19,19 @@ export class AppComponent {
 
     let delimiter = /,|\n/;  // Default delimiters: comma or newline
 
-    // Check for custom delimiter
+    // Check for custom delimiters
     if (numbers.startsWith("//")) {
       const delimiterEnd = numbers.indexOf("\n");
+      const delimiterPart = numbers.substring(2, delimiterEnd);
 
-      // Check if the delimiter is wrapped in square brackets
-      if (numbers[2] === '[' && numbers[delimiterEnd - 1] === ']') {
-        const customDelimiter = numbers.substring(3, delimiterEnd - 1);
-        delimiter = new RegExp(customDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));  // Escape special regex characters
+      // Check for multiple delimiters in the format //[delim1][delim2]
+      const delimiterMatches = delimiterPart.match(/\[([^\]]+)\]/g);
+      if (delimiterMatches) {
+        // Extract delimiters and escape special regex characters
+        const delimiters = delimiterMatches.map(d => d.slice(1, -1).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        delimiter = new RegExp(delimiters.join('|'));  // Create regex for multiple delimiters
       } else {
-        delimiter = new RegExp(numbers[2]);  // Handle single character delimiter
+        delimiter = new RegExp(delimiterPart.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));  // Single delimiter
       }
 
       numbers = numbers.substring(delimiterEnd + 1);  // Remove delimiter declaration

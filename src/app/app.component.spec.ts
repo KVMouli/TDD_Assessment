@@ -123,4 +123,12 @@ describe('AppComponent', () => {
     expect(app.Add('//[abc]\n1abc2abc3')).toBe(6);
   });
 
+  it('should handle multiple delimiters', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('//[*][%]\n1*2%3')).toBe(6);
+    expect(app.Add('//[**][%%]\n4**5%%6')).toBe(15);
+    expect(app.Add('//[---][+++]\n7---8+++9')).toBe(24);
+  });
+
 });
