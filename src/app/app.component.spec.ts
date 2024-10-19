@@ -81,4 +81,23 @@ describe('AppComponent', () => {
     expect(app.Add('1,2')).toBe(3);
     expect(app.Add('1\n2,3')).toBe(6);
   });
+
+  it('should throw an exception when a negative number is provided', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(() => app.Add('1,-2,3')).toThrow(new Error('Negatives not allowed: -2'));
+  });
+
+  it('should throw an exception listing all negative numbers', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(() => app.Add('1,-2,3,-4')).toThrow(new Error('Negatives not allowed: -2, -4'));
+  });
+
+  it('should still support default delimiters when no custom delimiter is given', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.Add('1,2')).toBe(3);
+    expect(app.Add('1\n2,3')).toBe(6);
+  });
 });
