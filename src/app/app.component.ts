@@ -34,8 +34,10 @@ export class AppComponent {
       throw new Error(`Negatives not allowed: ${negativeNumbers.join(", ")}`);
     }
 
-    return numArray.reduce((a, b) => a + b, 0);
+    // Filter out numbers greater than 1000 and sum the rest
+    return numArray
+      .filter(num => num <= 1000)  // Ignore numbers greater than 1000
+      .reduce((a, b) => a + b, 0);
   }
-
 
   }
