@@ -17,20 +17,25 @@ export class AppComponent {
       return 0;
     }
 
-    let delimiter = /,|\n/;  // Default delimiter (comma or newline)
+    let delimiter = /,|\n/;  // Default delimiters: comma or newline
 
-    // Check if there's a custom delimiter
+    // Check for custom delimiter
     if (numbers.startsWith("//")) {
       const delimiterEnd = numbers.indexOf("\n");
-      delimiter = new RegExp(numbers.substring(2, delimiterEnd));  // Extract the custom delimiter
-      numbers = numbers.substring(delimiterEnd + 1);  // Remove the delimiter declaration line
+      delimiter = new RegExp(numbers.substring(2, delimiterEnd));  // Extract custom delimiter
+      numbers = numbers.substring(delimiterEnd + 1);  // Remove delimiter declaration
     }
 
     const numArray = numbers.split(delimiter).map(Number);
 
+    // Check for negative numbers
+    const negativeNumbers = numArray.filter(num => num < 0);
+    if (negativeNumbers.length > 0) {
+      throw new Error(`Negatives not allowed: ${negativeNumbers.join(", ")}`);
+    }
+
     return numArray.reduce((a, b) => a + b, 0);
   }
-
 
 
   }
